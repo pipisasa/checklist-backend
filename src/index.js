@@ -8,6 +8,7 @@ const qs = require('qs')
 const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 const {db} = require('./utils');
+const AdminBroRoutes = require('./routes/adminBro.routes');
 // import jwt = require('jsonwebtoken';
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(cors());
 // app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
+app.use('/admin', AdminBroRoutes);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, _, next)=>{
 console.log(`
@@ -37,10 +39,12 @@ console.log(`
 
 // ? Routes
 app.use('/api/v1', routes);
+app.use(express.static('src/public'));
 
 
 app.get("/", (_, res)=>{
-  res.sendFile(__dirname+'/index.html')
+  // res.sendFile(__dirname+'/index.html')
+  res.redirect('/admin')
 });
 
 // ? Main
